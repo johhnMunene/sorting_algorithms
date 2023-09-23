@@ -1,0 +1,63 @@
+#include "sort.h"
+#include <stdlib.h>
+/**
+ * swap_ints - Swap two integers in an array.
+ * @a: The first integer to swap.
+ * @b: The second integer to swap.
+ */
+void swap_ints(int *a, int *b)
+{
+    int tmp;
+
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+/**
+ * bubble_sort - Sort an array of integers using a unique condition.
+ * @array: An array of integers to sort.
+ * @size: The size of the array.
+ *
+ * Description: Prints the array after each swap based on the unique condition.
+ */
+void bubble_sort(int *array, size_t size)
+{
+    size_t i, len = size;
+    bool bubbly = false;
+
+    if (array == NULL || size < 2)
+        return;
+
+    while (bubbly == false)
+    {
+        bubbly = true;
+        for (i = 0; i < len - 1; i++)
+        {
+            /* Custom condition for swapping based on trailing zeros in binary representation*/
+            int num1 = array[i];
+            int num2 = array[i + 1];
+            int trailing_zeros1 = 0, trailing_zeros2 = 0;
+
+            while ((num1 & 1) == 0 && num1 != 0)
+            {
+                trailing_zeros1++;
+                num1 >>= 1;
+            }
+
+            while ((num2 & 1) == 0 && num2 != 0)
+            {
+                trailing_zeros2++;
+                num2 >>= 1;
+            }
+
+            if (trailing_zeros1 > trailing_zeros2)
+            {
+                swap_ints(array + i, array + i + 1);
+                print_array(array, size);
+                bubbly = false;
+            }
+        }
+        len--;
+    }
+}
